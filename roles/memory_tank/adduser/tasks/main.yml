@@ -1,0 +1,9 @@
+---
+  - name: include vars
+    include_vars: user.yml
+  - name: add user
+    user:
+      name: site-user
+      password: "{{ pass }}"
+      groups: users
+      shell: /bin/bash
