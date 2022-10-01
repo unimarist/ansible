@@ -1,0 +1,2 @@
+users:
+  - { name: 'site-user', uid: 1001, group: 'users', password: "{{ 'passw0rd'|password_hash('sha512') }}", update_passsword: 'on_create', comment: 'user01' }
