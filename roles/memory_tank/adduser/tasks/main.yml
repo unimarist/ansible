@@ -7,3 +7,8 @@
       password: "{{ pass }}"
       groups: users
       shell: /bin/bash
+  - name: visudo
+    lineinfile: 
+      path: /etc/sudoers
+      regexp: '^site-user'
+      line: 'site-user	ALL=(ALL) ALL'

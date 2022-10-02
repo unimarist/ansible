@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: memory_tank/install
+    - role: memory_tank/mysql

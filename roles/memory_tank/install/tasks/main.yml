@@ -1,0 +1,51 @@
+- name: plugin install
+  yum: name={{ item }} 
+  with_items:
+    - git
+    #コンパイル用コマンド
+    - make
+    #コンパイラ
+    - gcc-c++
+    #パッチ適用コマンド
+    - patch
+    #OpenSSL用ファイル
+    - openssl-devel
+    #Ruby用パッケージ/アプリ開発用ライブラリ
+    - libyaml-devel
+    - libffi-devel 
+    - libicu-devel
+    - libxml2
+    - libxslt
+    - libxml2-devel
+    - libxslt-devel
+    - zlib-devel
+    - readline-devel
+
+- name: mysql install
+  #GPGキーインストール/MySQL公式のyumリポジトリを追加/mysql clientインストール
+  shell: rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022;
+         rpm -ivh http://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm;
+  yum: name=mysql-community-client
+
+- name: node.js install
+  #Node.jsのバージョン管理ツールnvmをインストールし、nvmでNode.jsをインストール
+  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash;
+         source ~/.bash_profile;
+         nvm install 15.5.0;
+
+- name: rbenv install
+  #rubyのバージョン管理ツールをインストール/パスを通し、shims と autocompletion の有効化設定を追記/設定反映
+  shell: git clone https://github.com/sstephenson/rbenv.git ~/.rbenv;
+         echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile;
+         echo 'eval "$(rbenv init -)"' >> ~/.bash_profile;
+         source ~/.bash_profile
+
+- name: ruby-build  install
+  #rubyのビルドツールをインストール/ ~/.rbenv/versions/*/bin/ 以下のファイルを ~/.rbenv/shims/ 以下にコピー
+  shell: git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build;
+         rbenv rehash;
+
+- name: ruby install
+  shell: rbenv install -v 2.6.5;
+         rbenv global 2.6.5;
+         rbenv rehash;

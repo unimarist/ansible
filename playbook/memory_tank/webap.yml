@@ -1,5 +1,8 @@
 ---
-
-- include: common.yml
 - hosts: all
   become: yes
+  roles:
+    - role: memory_tank/adduser
+    - role: memory_tank/install
+    - role: memory_tank/nginx
+    - role: memory_tank/unicorn
