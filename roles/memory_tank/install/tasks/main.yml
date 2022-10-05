@@ -21,31 +21,62 @@
     - zlib-devel
     - readline-devel
 
+- name: mysql GPG install/  add repo
+  #MySQL公式のyumリポジトリを追加/GPGキーのインストール
+  shell: rpm -ivh http://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm;
+         rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022;
+
 - name: mysql install
-  #GPGキーインストール/MySQL公式のyumリポジトリを追加/mysql clientインストール
-  shell: rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022;
-         rpm -ivh http://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm;
+  #mysql clientインストール
   yum: name=mysql-community-client
 
-- name: node.js install
-  #Node.jsのバージョン管理ツールnvmをインストールし、nvmでNode.jsをインストール
-  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash;
-         source ~/.bash_profile;
-         nvm install 15.5.0;
+- name: Download nvm install.sh
+  get_url:
+    url: https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh
+    dest: /var/tmp
+    mode: 0755
+ 
+- name: install.sh
+  become_user: site-user
+  shell: /var/tmp/install.sh
+ 
+- name: source nvm.sh
+  become_user: site-user
+  shell: source /home/site-user/.nvm/nvm.sh && nvm install v15.5.0 && nvm alias default 15.5.0;
 
 - name: rbenv install
   #rubyのバージョン管理ツールをインストール/パスを通し、shims と autocompletion の有効化設定を追記/設定反映
-  shell: git clone https://github.com/sstephenson/rbenv.git ~/.rbenv;
-         echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile;
-         echo 'eval "$(rbenv init -)"' >> ~/.bash_profile;
-         source ~/.bash_profile
+  become_user: site-user
+  git: 
+    repo: https://github.com/sstephenson/rbenv.git
+    dest: ~/.rbenv
+
+- name: path rbenv
+  become_user: site-user
+  lineinfile:
+      dest: ~/.bash_profile
+      line: '{{ item }}'
+  with_items:
+    - PATH="$HOME/.rbenv/bin:$PATH"
+    - eval "$(rbenv init -)"
+
+- name: source rbenv
+  become_user: site-user
+  shell: source ~/.bash_profile
 
 - name: ruby-build  install
   #rubyのビルドツールをインストール/ ~/.rbenv/versions/*/bin/ 以下のファイルを ~/.rbenv/shims/ 以下にコピー
-  shell: git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build;
-         rbenv rehash;
+  become_user: site-user
+  git: 
+    repo: https://github.com/sstephenson/ruby-build.git
+    dest: ~/.rbenv/plugins/ruby-build
+
+- name: rbenv rehash
+  become_user: site-user
+  shell: bash -lc "rbenv rehash"
 
 - name: ruby install
-  shell: rbenv install -v 2.6.5;
-         rbenv global 2.6.5;
-         rbenv rehash;
+  become_user: site-user
+  shell: bash -lc "rbenv install -v 2.6.5";
+         bash -lc "rbenv global 2.6.5";
+         bash -lc "rbenv rehash";
