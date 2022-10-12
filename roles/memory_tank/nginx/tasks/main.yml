@@ -1,0 +1,19 @@
+- name: make directory
+  file: path=/var/www/rails
+        state=directory
+        owner=site-user
+        group=site-user
+        mode=0755
+
+- name: nginx.conf
+  copy:
+    src: memory_tank.conf
+    dest: /etc/nginx/conf.d/memory_tank.conf
+    owner: root
+    group: root
+    mode: 0644
+
+ - name: nginx restart
+   service:
+     name: nginxd
+     state: restarted

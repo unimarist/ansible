@@ -1,0 +1,20 @@
+- name: vi Gemfile
+  blockinfile:
+      path: /var/www/rails/memory_tank/Gemfile
+      block: |
+        group :production, :staging do
+            gem 'unicorn'
+        end
+        gem 'dotenv-rails'
+
+- name: install unicorn 
+  shell: gem install bundler;
+         bundle install;
+
+- name: unicorn.conf
+  copy:
+    src: unicorn.conf.rb
+    dest: /var/www/rails/memory_tank/config/unicorn.conf.rb
+    owner: site-user
+    group: site-user
+    mode: 0644
