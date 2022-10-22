@@ -28,7 +28,11 @@
 
 - name: mysql install
   #mysql clientインストール
-  yum: name=mysql-community-client
+  yum: name={{ item }}
+  with_items:
+    - mysql-community-client
+    - mysql-devel
+
 
 - name: Download nvm install.sh
   get_url:
