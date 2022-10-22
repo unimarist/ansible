@@ -22,12 +22,23 @@
     group: root
     mode: 0644
 
+- name: mysql restart
+  service:
+    name: mysqld
+    state: restarted
+
 - name: create mysql database
   mysql_db: name=memory_tank state=present
 
 - name: create mysql user
   mysql_user: name={{ mysql_user }} host={{ host }} password={{ mysql_password }} priv=memory_tank.*:ALL,GRANT state=present
  
+- name: Delete Line
+  lineinfile:
+    dest: /etc/my.cnf
+    regexp: skip-grant-tables
+    state: absent
+
 - name: mysql restart
   service:
     name: mysqld
