@@ -6,7 +6,7 @@
     group: root
     mode: 0644
 
- - name: nginx restart
-   service:
-     name: nginxd
-     state: restarted
+- name: nginx restart
+  service:
+    name: nginx
+    state: restarted
