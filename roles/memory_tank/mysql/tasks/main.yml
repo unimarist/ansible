@@ -1,11 +1,18 @@
- name: mysql GPG install/  add repo
+- name: mysql GPG install/  add repo
   #MySQL公式のyumリポジトリを追加/GPGキーのインストール
   shell: rpm -ivh http://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm;
          rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022;
 
+- name: epel install
+  shell: amazon-linux-extras install -y epel
+
 - name: mysql install
   #mysql インストール
-  yum: name=mysql-community-server
+  yum: name={{ item }}
+  with_items:
+    - mysql-community-server
+    - mysql-devel
+    - python2-PyMySQL.noarch 
 
 - name: my.cnf
   copy:
@@ -21,7 +28,7 @@
 - name: create mysql user
   mysql_user: name={{ mysql_user }} host={{ host }} password={{ mysql_password }} priv=memory_tank.*:ALL,GRANT state=present
  
- - name: mysql restart
-   service:
-     name: mysqld
-     state: restarted
+- name: mysql restart
+  service:
+    name: mysqld
+    state: restarted
