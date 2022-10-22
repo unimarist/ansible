@@ -75,8 +75,23 @@
   become_user: site-user
   shell: bash -lc "rbenv rehash"
 
+- name: インストール対象のバージョンのrubyがインストール済か確認
+  become_user: site-user
+  shell: bash -lc "rbenv versions | grep 2.6.5"
+  register: rbenv_check_install
+  changed_when: False
+  ignore_errors: yes
+
 - name: ruby install
   become_user: site-user
   shell: bash -lc "rbenv install -v 2.6.5";
          bash -lc "rbenv global 2.6.5";
          bash -lc "rbenv rehash";
+  when: rbenv_check_install is failed
+
+- name: make directory
+  file: path=/var/www/rails
+        state=directory
+        owner=site-user
+        group=site-user
+        mode=0755

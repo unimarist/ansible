@@ -1,10 +1,3 @@
-- name: make directory
-  file: path=/var/www/rails
-        state=directory
-        owner=site-user
-        group=site-user
-        mode=0755
-
 - name: nginx.conf
   copy:
     src: memory_tank.conf
