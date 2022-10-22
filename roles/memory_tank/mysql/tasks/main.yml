@@ -30,9 +30,19 @@
 - name: create mysql database
   mysql_db: name=memory_tank state=present
 
+- name: pass reset
+  shell: mysql -uroot -e "flush privileges; alter user 'root'@'localhost' identified by '{{ mysql_password  }}';"
+
 - name: create mysql user
-  mysql_user: name={{ mysql_user }} host={{ host }} password={{ mysql_password }} priv=memory_tank.*:ALL,GRANT state=present
- 
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_password }}"
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: "{{ host }}"
+    priv: memory_tank.*:ALL,GRANT
+    state: present
+
 - name: Delete Line
   lineinfile:
     dest: /etc/my.cnf
