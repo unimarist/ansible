@@ -7,11 +7,14 @@
         end
         gem 'dotenv-rails'
 
-- name: 'bundlerインストール'
-  gem:
-    name: bundler
-    user_install: no
-    executable: /home/site-user/.rbenv/shims/gem
+- name: gem bundler install
+  become_user: site-user
+  shell: /bin/bash -lc "gem install bundler"
+
+- name: bundle install
+  become_user: site-user
+  shell: cd /var/www/rails/memory_tank;
+         /bin/bash -lc "bundle install";
 
 - name: unicorn.conf
   copy:
