@@ -45,29 +45,13 @@
     mode: 0755
   when: not nvm_installer.stat.exists
 
-- name: check nvm_installed
-  become_user: site-user
-  shell: bash -lc "nvm versions | grep 0.29.0"
-  register: nvm_check_install
-  changed_when: False
-  ignore_errors: yes
-
 - name: install.sh
   become_user: site-user
   shell: /var/tmp/install.sh
-  when: nvm_check_install is failed
-
-- name: check nodejs_installed
-  become_user: site-user
-  shell: bash -lc "node --version | grep 15.5.0"
-  register: nodejs_check_install
-  changed_when: False
-  ignore_errors: yes
 
 - name: source nvm.sh
   become_user: site-user
   shell: source /home/site-user/.nvm/nvm.sh && nvm install v15.5.0 && nvm alias default 15.5.0;
-  when: nodejs_install is failed
 
 - name: check directory rbenv
   become_user: site-user
@@ -101,7 +85,7 @@
   become_user: site-user
   stat:
     path: ~/.rbenv/plugins/ruby-build
-  register: ruby-build
+  register: rbuild
 
 - name: ruby-build  install
   #rubyのビルドツールをインストール/ ~/.rbenv/versions/*/bin/ 以下のファイルを ~/.rbenv/shims/ 以下にコピー
@@ -109,12 +93,12 @@
   git: 
     repo: https://github.com/sstephenson/ruby-build.git
     dest: ~/.rbenv/plugins/ruby-build
-  when: not ruby-build.stat.exists
+  when: not rbuild.stat.exists
 
 - name: rbenv rehash
   become_user: site-user
   shell: bash -lc "rbenv rehash"
-  when: not ruby-build.stat.exists
+  when: not rbuild.stat.exists
 
 - name: インストール対象のバージョンのrubyがインストール済か確認
   become_user: site-user
