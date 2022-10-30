@@ -33,20 +33,47 @@
     - mysql-community-client
     - mysql-devel
 
+- name: check file nvm installer
+  stat:
+    path: /var/tmp/install.sh
+  register: nvm_installer
 
 - name: Download nvm install.sh
   get_url:
     url: https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh
     dest: /var/tmp
     mode: 0755
- 
+  when: not nvm_installer.stat.exists
+
+- name: check nvm_installed
+  become_user: site-user
+  shell: bash -lc "nvm versions | grep 0.29.0"
+  register: nvm_check_install
+  changed_when: False
+  ignore_errors: yes
+
 - name: install.sh
   become_user: site-user
   shell: /var/tmp/install.sh
- 
+  when: nvm_check_install is failed
+
+- name: check nodejs_installed
+  become_user: site-user
+  shell: bash -lc "node --version | grep 15.5.0"
+  register: nodejs_check_install
+  changed_when: False
+  ignore_errors: yes
+
 - name: source nvm.sh
   become_user: site-user
   shell: source /home/site-user/.nvm/nvm.sh && nvm install v15.5.0 && nvm alias default 15.5.0;
+  when: nodejs_install is failed
+
+- name: check directory rbenv
+  become_user: site-user
+  stat:
+    path: ~/.rbenv
+  register: rbenv
 
 - name: rbenv install
   #rubyのバージョン管理ツールをインストール/パスを通し、shims と autocompletion の有効化設定を追記/設定反映
@@ -54,6 +81,7 @@
   git: 
     repo: https://github.com/sstephenson/rbenv.git
     dest: ~/.rbenv
+  when: not rbenv.stat.exists
 
 - name: path rbenv
   become_user: site-user
@@ -67,6 +95,13 @@
 - name: source rbenv
   become_user: site-user
   shell: source ~/.bash_profile
+  when: not rbenv.stat.exists
+
+- name: check directory ruby-build
+  become_user: site-user
+  stat:
+    path: ~/.rbenv/plugins/ruby-build
+  register: ruby-build
 
 - name: ruby-build  install
   #rubyのビルドツールをインストール/ ~/.rbenv/versions/*/bin/ 以下のファイルを ~/.rbenv/shims/ 以下にコピー
@@ -74,10 +109,12 @@
   git: 
     repo: https://github.com/sstephenson/ruby-build.git
     dest: ~/.rbenv/plugins/ruby-build
+  when: not ruby-build.stat.exists
 
 - name: rbenv rehash
   become_user: site-user
   shell: bash -lc "rbenv rehash"
+  when: not ruby-build.stat.exists
 
 - name: インストール対象のバージョンのrubyがインストール済か確認
   become_user: site-user
@@ -93,9 +130,16 @@
          bash -lc "rbenv rehash";
   when: rbenv_check_install is failed
 
+- name: check directory app
+  become_user: site-user
+  stat:
+    path: /var/www/rails
+  register: app
+
 - name: make directory
   file: path=/var/www/rails
         state=directory
         owner=site-user
         group=site-user
         mode=0755
+  when: not app.stat.exists
