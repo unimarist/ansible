@@ -1,0 +1,2 @@
+- name: create config
+  shell: containerd config default > /etc/containerd/config.toml
