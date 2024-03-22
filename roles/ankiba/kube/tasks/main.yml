@@ -1,0 +1,37 @@
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: install apt-transport-https ca-certificates curl
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+
+- name: check file kubernetes-apt-keyring.gpg
+  stat:
+    path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  register: kubernetes_apt_keyring_gpg
+
+- name: Add Kubernetes's official GPG key
+  shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg;
+  when: not kubernetes_apt_keyring_gpg.stat.exists
+
+- name: Add the repository to Apt sources
+  shell: echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+  when: not kubernetes_apt_keyring_gpg.stat.exists
+
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: install kubelet kubeadm kubectl
+  apt:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+
+- name: hold kube version
+  shell: apt-mark hold kubelet kubeadm kubectl
