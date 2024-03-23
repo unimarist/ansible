@@ -1,0 +1,13 @@
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: install kubelet kubeadm kubectl
+  apt:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+
+- name: hold kube version
+  shell: apt-mark hold kubelet kubeadm kubectl

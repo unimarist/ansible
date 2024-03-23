@@ -1,4 +1,15 @@
 ---
+- name: check installation status
+  shell: apt list --installed 2>/dev/null | grep containerd
+  register: containerd_is_installed
+  ignore_errors: True
+  changed_when: False
+
 - include_tasks: prepare.yml
+  when: containerd_is_installed.stdout == ""
+
 - include_tasks: install.yml
+  when: containerd_is_installed.stdout == ""
+
 - include_tasks: setting.yml
+  when: containerd_is_installed.stdout == ""
