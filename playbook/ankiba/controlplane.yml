@@ -4,3 +4,4 @@
   roles:
     - ankiba/containerd
     - ankiba/kube
+    - ankiba/controlplane

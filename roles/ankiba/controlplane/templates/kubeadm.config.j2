@@ -1,0 +1,30 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+apiServer:
+  certSANs:
+    - 127.0.0.1
+    - {{ controlplane_public_ip }}
+  extraArgs:
+    bind-address: "0.0.0.0"
+    cloud-provider: external
+clusterName: {{ app }}-cluster
+scheduler:
+  extraArgs:
+    bind-address: "0.0.0.0"
+controllerManager:
+  extraArgs:
+    bind-address: "0.0.0.0"
+    cloud-provider: external
+networking:
+  podSubnet: {{ pod_Subnet }}
+  serviceSubnet: {{ service_Subnet }}
+---
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: InitConfiguration
+nodeRegistration:
+  name: {{ controlplane_private_ip_hostname }}
+  kubeletExtraArgs:
+    cloud-provider: external
+localAPIEndpoint:
+  advertiseAddress: {{ controlplane_private_ip }}
+  bindPort: 6443

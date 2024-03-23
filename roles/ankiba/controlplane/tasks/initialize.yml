@@ -1,0 +1,15 @@
+- name: create kubeadm.config
+  template:
+    src: kubeadm.config.j2
+    dest: /root/kubeadm.config
+    owner: root
+    group: root
+    mode: 0644
+
+- name: initialize
+  shell: kubeadm init --config /root/kubeadm.config > /root/initialize.log
+
+- name: set kubeconfig
+  shell: mkdir -p /home/ubuntu/.kube;
+         cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config;
+         chown ubuntu:ubuntu /home/ubuntu/.kube/config;

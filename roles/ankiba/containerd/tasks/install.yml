@@ -30,4 +30,4 @@
 
 - name: install containerd
   apt:
-    name: containerd.io=1.6.28-2
+    name: containerd.io={{ containerd_version }}
