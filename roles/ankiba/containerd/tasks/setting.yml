@@ -1,14 +1,15 @@
+- name: check file origin backup
+  stat:
+    path: /etc/containerd/config.toml.bk
+  register: containerd_config
+
 - name: origin backup
   copy:
     src: /etc/containerd/config.toml
     dest: /etc/containerd/config.toml.bk
     remote_src: yes
     force: no
-
-- name: check file origin backup
-  stat:
-    path: /etc/containerd/config.toml.bk
-  register: containerd_config
+  when: not containerd_config.stat.exists
 
 - name: create config
   shell: containerd config default > /etc/containerd/config.toml
@@ -20,8 +21,10 @@
     regexp: 'SystemdCgroup = false'
     line: '            SystemdCgroup = true'
     backrefs: true
+  when: not containerd_config.stat.exists
 
 - name: containerd restart
   service:
     name: containerd
     state: restarted
+  when: not containerd_config.stat.exists
