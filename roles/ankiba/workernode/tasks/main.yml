@@ -1,0 +1,11 @@
+---
+- name: check file /root/kubeadm-join-config.yaml
+  stat:
+    path: /root/kubeadm-join-config.yaml
+  register: join_config
+
+- include_tasks: prepare.yml
+  when: not join_config.stat.exists
+
+- include_tasks: join_cluster.yml
+  when: not join_config.stat.exists

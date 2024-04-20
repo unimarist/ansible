@@ -1,0 +1,10 @@
+- name: create kubeadm-join-config.yaml
+  template:
+    src: kubeadm-join-config.j2
+    dest: /root/kubeadm-join-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: join cluster
+  shell: kubeadm join --config /root/kubeadm-join-config.yaml > /root/join_cluster.log
