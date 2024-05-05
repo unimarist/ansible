@@ -7,11 +7,11 @@
     - ankiba/workernode
   vars_prompt:
     - name: "bootstraptoken"
-      prompt: "controlplaneのクラスタ作成時に出力させたログから控えた値を入力"
+      prompt: "controlplaneのクラスタ作成時に出力させたログから控えた値(bootstraptoken)を入力"
       private: no
     - name: "apiServerEndpoint"
-      prompt: "controlplaneのクラスタ作成時に出力させたログから控えた値を入力"
+      prompt: "controlplaneのクラスタ作成時に出力させたログから控えた値(apiServerEndpoint)を入力"
       private: no
     - name: "discovery_token_ca_cert_hash"
-      prompt: "controlplaneのクラスタ作成時に出力させたログから控えた値を入力"
+      prompt: "controlplaneのクラスタ作成時に出力させたログから控えた値(discovery_token_ca_cert_hash)を入力"
       private: no
