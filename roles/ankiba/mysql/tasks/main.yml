@@ -1,0 +1,15 @@
+---
+- name: check installation status
+  shell: apt list --installed 2>/dev/null | grep mysql
+  register: mysql_is_installed
+  ignore_errors: True
+  changed_when: False
+
+- include_tasks: install.yml
+  when: mysql_is_installed.stdout == ""
+
+- include_tasks: setting.yml
+  when: mysql_is_installed.stdout == ""
+
+- include_tasks: create.yml
+  when: mysql_is_installed.stdout == ""

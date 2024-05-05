@@ -1,0 +1,21 @@
+- name: set my.cnf
+  copy:
+    src: my.cnf.ankiba
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: set /etc/mysql/mysql.conf.d/mysqld.cnf
+  lineinfile:
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: 'bind-address'
+    state: absent
+
+- name: mysql restart
+  service:
+    name: mysql
+    state: restarted
+
+- name: set root pass
+  shell: mysql -uroot -e "alter user 'root'@'localhost' identified with mysql_native_password BY '{{ mysql_password }}';"

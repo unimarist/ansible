@@ -1,0 +1,15 @@
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: install mysql-server
+  apt:
+    force_apt_get: yes
+    name:
+      - mysql-server-8.0
+      - python3-pymysql
+
+- name: Enable service mysqld
+  service:
+    name: mysql
+    enabled: yes

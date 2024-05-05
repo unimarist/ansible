@@ -5,3 +5,7 @@
     - ankiba/containerd
     - ankiba/kube
     - ankiba/controlplane
+  vars_prompt:
+    - name: "controlplane_public_ip"
+      prompt: "controlplaneノードのパブリックIPアドレスを入力"
+      private: no
