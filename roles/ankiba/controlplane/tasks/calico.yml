@@ -1,5 +1,9 @@
+- name: untaint controlplane
+  shell: sudo -u ubuntu kubectl taint nodes {{ controlplane_private_ip_hostname }} node-role.kubernetes.io/control-plane:NoSchedule-;
+         sudo -u ubuntu kubectl taint nodes {{ controlplane_private_ip_hostname }} node.cloudprovider.kubernetes.io/uninitialized=true:NoSchedule-
 - name: install tigera-operator
   shell: sudo -u ubuntu kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v{{ calico_version }}/manifests/tigera-operator.yaml;
 - name: install calico
-  shell: sudo -u ubuntu kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v{{ calico_version }}/manifests/custom-resources.yaml
-
+  shell: sudo -u ubuntu kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v{{ calico_version }}/manifests/custom-resources.yaml;sleep 60;
+- name: taint controlplane
+  shell: sudo -u ubuntu kubectl taint nodes {{ controlplane_private_ip_hostname }} node-role.kubernetes.io/control-plane:NoSchedule;
