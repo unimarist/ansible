@@ -7,4 +7,4 @@
     mode: 0644
 
 - name: join cluster
-  shell: kubeadm join --config /root/kubeadm-join-config.yaml > /root/join_cluster.log
+  shell: kubeadm join --config /root/kubeadm-join-config.yaml > /root/join_cluster.log;sleep 60;

@@ -9,5 +9,3 @@ discovery:
       - {{ discovery_token_ca_cert_hash }}
 nodeRegistration:
   name: {{ workernode_private_ip_hostname }}
-  kubeletExtraArgs:
-    cloud-provider: external

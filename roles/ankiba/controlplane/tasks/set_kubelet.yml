@@ -1,0 +1,13 @@
+- name: set kubelet
+  copy:
+    src: kubeadm-flags.env
+    dest: /var/lib/kubelet/kubeadm-flags.env
+    owner: root
+    group: root
+    mode: 0644
+
+- name: restart kubelet
+  shell: sudo systemctl restart kubelet
+
+- name: untaint controlplane
+  shell: sudo -u ubuntu kubectl taint nodes {{ controlplane_private_ip_hostname }} node-role.kubernetes.io/control-plane:NoSchedule-;

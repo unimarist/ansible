@@ -12,3 +12,6 @@
 
 - include_tasks: calico.yml
   when: not admin_config.stat.exists
+
+- include_tasks: set_kubelet.yml
+  when: not admin_config.stat.exists
