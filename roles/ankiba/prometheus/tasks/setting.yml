@@ -1,0 +1,36 @@
+- name: set prom_setting.sh
+  copy:
+    src: prom_setting.sh
+    dest: /tmp/prom_setting.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: execute prom_setting.sh
+  script: /tmp/prom_setting.sh
+
+- name : set conf
+  template:
+    src: prometheus.j2
+    dest: /etc/prometheus/prometheus.yml
+    owner: prometheus
+    group: prometheus
+    mode: 0644
+
+- name: set prometheus.service
+  copy:
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable prometheus.service
+  service:
+    name: prometheus
+    enabled: yes
+
+- name: prometheus restart
+  service:
+    name: prometheus
+    state: restarted

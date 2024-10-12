@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - ankiba/node-exporter
+    - ankiba/blackbox-exporter
+    - ankiba/alertmanager
+    - ankiba/prometheus
+    - ankiba/grafana
+  vars_prompt:
+    - name: "work_private_ip"
+      prompt: "workサーバのプライベートIPアドレスを入力"
+      private: no
+    - name: "db_private_ip"
+      prompt: "dbサーバのプライベートIPアドレスを入力"
+      private: no
+    - name: "workernode_private_ip"
+      prompt: "workernodeのプライベートIPアドレスを入力"
+      private: no
+    - name: "prometheus_service_nodeport"
+      prompt: "フェデレート対象のk8s prometheus_service_nodeport を入力"
+      private: no
+    - name: "slack_webhook_url"
+      prompt: "alertmanager通知先のslack_webhook_url(https://hooks.slack.com/services/以降の文字列) を入力"
+      private: no
+    

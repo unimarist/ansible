@@ -1,0 +1,11 @@
+---
+- name: check file /etc/systemd/system/mysqld_exporter.service
+  stat:
+    path: /etc/systemd/system/mysqld_exporter.service
+  register: mysqld_exporter
+
+- include_tasks: install.yml
+  when: not mysqld_exporter.stat.exists
+
+- include_tasks: setting.yml
+  when: not mysqld_exporter.stat.exists

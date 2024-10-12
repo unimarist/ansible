@@ -1,0 +1,44 @@
+- name: set alertmanager.sh
+  copy:
+    src: alertmanager.sh
+    dest: /tmp/alertmanager.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: execute alertmanager.sh
+  script: /tmp/alertmanager.sh
+
+- name : set conf
+  template:
+    src: alertmanager.j2
+    dest: /etc/prometheus/alertmanager.yml
+    owner: prometheus
+    group: prometheus
+    mode: 0644
+
+- name : set conf
+  copy:
+    src: alert_rules.yml
+    dest: /etc/prometheus/alert_rules.yml
+    owner: prometheus
+    group: prometheus
+    mode: 0644
+
+- name: set alertmanager.service
+  copy:
+    src: alertmanager.service
+    dest: /etc/systemd/system/alertmanager.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable alertmanager.service
+  service:
+    name: alertmanager
+    enabled: yes
+
+- name: alertmanager restart
+  service:
+    name: alertmanager
+    state: restarted

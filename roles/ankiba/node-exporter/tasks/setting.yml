@@ -1,0 +1,28 @@
+- name: set node_exporter_setting.sh
+  copy:
+    src: node_exporter_setting.sh
+    dest: /tmp/node_exporter_setting.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: execute node_exporter_setting.sh
+  script: /tmp/node_exporter_setting.sh
+
+- name: set node_exporter.service
+  copy:
+    src: node_exporter.service
+    dest: /etc/systemd/system/node_exporter.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable node_exporter.service
+  service:
+    name: node_exporter
+    enabled: yes
+
+- name: node_exporter restart
+  service:
+    name: node_exporter
+    state: restarted

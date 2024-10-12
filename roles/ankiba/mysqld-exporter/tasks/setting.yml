@@ -1,0 +1,47 @@
+- name: set mysqld_exporter_setting.sh
+  copy:
+    src: mysqld_exporter.sh
+    dest: /tmp/mysqld_exporter
+    owner: root
+    group: root
+    mode: 0755
+
+- name: execute mysqld_exporter.sh
+  script: /tmp/mysqld_exporter.sh
+
+- name: create mysql user
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_password }}"
+    login_host: localhost
+    name: mysqld_exporter
+    host: localhost
+    password: "{{ mysql_password }}"
+    priv: '*.*:GRANT PROCESS, REPLICATION CLIENT, SELECT ON'
+    state: present
+
+- name: set .my.cnf
+  template:
+    src: my.cnf
+    dest: /home/mysqld_exporter/.my.cnf
+    owner: mysqld_exporter
+    group: mysqld_exporter
+    mode: 0644
+
+- name: set mysqld_exporter.service
+  copy:
+    src: mysqld_exporter.service
+    dest: /etc/systemd/system/mysqld_exporter.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable mysqld_exporter.service
+  service:
+    name: mysqld_exporter
+    enabled: yes
+
+- name: mysqld_exporter restart
+  service:
+    name: mysqld_exporter
+    state: restarted

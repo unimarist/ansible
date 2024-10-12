@@ -1,0 +1,11 @@
+---
+- name: check file /etc/systemd/system/prometheus.service
+  stat:
+    path: /etc/systemd/system/prometheus.service
+  register: prometheus
+
+- include_tasks: install.yml
+  when: not prometheus.stat.exists
+
+- include_tasks: setting.yml
+  when: not prometheus.stat.exists

@@ -1,0 +1,12 @@
+[Unit]
+Description=Alert Manager
+
+[Service]
+User=prometheus
+ExecStart=/sbin/alertmanager --config.file=/etc/prometheus/alertmanager.yml
+ExecStop=/bin/kill -TERM ${MAINPID}
+ExecReload=/bin/kill -HUP ${MAINPID}
+WorkingDirectory=/var/lib/alertmanager
+
+[Install]
+WantedBy=multi-user.target

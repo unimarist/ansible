@@ -1,0 +1,12 @@
+
+---
+- name: check file /etc/systemd/system/alertmanager.service
+  stat:
+    path: /etc/systemd/system/alertmanager.service
+  register: alertmanager
+
+- include_tasks: install.yml
+  when: not alertmanager.stat.exists
+
+- include_tasks: setting.yml
+  when: not alertmanager.stat.exists

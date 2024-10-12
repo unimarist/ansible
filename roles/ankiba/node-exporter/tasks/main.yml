@@ -1,0 +1,11 @@
+---
+- name: check file /etc/systemd/system/node_exporter.service
+  stat:
+    path: /etc/systemd/system/node_exporter.service
+  register: node_exporter
+
+- include_tasks: install.yml
+  when: not node_exporter.stat.exists
+
+- include_tasks: setting.yml
+  when: not node_exporter.stat.exists

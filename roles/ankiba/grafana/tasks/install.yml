@@ -1,0 +1,17 @@
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: install package
+  apt:
+    force_apt_get: yes
+    name:
+      - adduser
+      - libfontconfig1
+      - musl
+
+- name: download grafana
+  shell: wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.0.0_amd64.deb
+
+- name: install grafana
+  shell: sudo dpkg -i grafana_5.0.0_amd64.deb

@@ -1,0 +1,12 @@
+[Unit]
+Description=mysqld_exporter
+
+[Service]
+User=mysqld_exporter
+Restart=always
+ExecStart=/sbin/mysqld_exporter OPTIONS='--config.my-cnf=/home/mysqld_exporter/.my.cnf'
+ExecStop=/bin/kill -TERM ${MAINPID}
+ExecReload=/bin/kill -HUP ${MAINPID}
+
+[Install]
+WantedBy=multi-user.target

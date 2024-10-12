@@ -1,0 +1,11 @@
+---
+- name: check file /etc/systemd/system/blackbox_exporter.service
+  stat:
+    path: /etc/systemd/system/blackbox_exporter.service
+  register: blackbox_exporter
+
+- include_tasks: install.yml
+  when: not blackbox_exporter.stat.exists
+
+- include_tasks: setting.yml
+  when: not blackbox_exporter.stat.exists

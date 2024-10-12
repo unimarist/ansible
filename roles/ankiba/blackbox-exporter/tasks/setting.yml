@@ -1,0 +1,28 @@
+- name: set blackbox_exporter.sh
+  copy:
+    src: blackbox_exporter.sh
+    dest: /tmp/blackbox_exporter.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: execute blackbox_exporter.sh
+  script: /tmp/blackbox_exporter.sh
+
+- name: set blackbox_exporter.service
+  copy:
+    src: blackbox_exporter.service
+    dest: /etc/systemd/system/blackbox_exporter.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable blackbox_exporter.service
+  service:
+    name: blackbox_exporter
+    enabled: yes
+
+- name: blackbox_exporter restart
+  service:
+    name: blackbox_exporter
+    state: restarted

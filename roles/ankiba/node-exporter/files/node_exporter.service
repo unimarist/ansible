@@ -1,0 +1,11 @@
+[Unit]
+Description=node_exporter
+
+[Service]
+User=node_exporter
+ExecStart=/sbin/node_exporter
+ExecStop=/bin/kill -TERM ${MAINPID}
+ExecReload=/bin/kill -HUP ${MAINPID}
+
+[Install]
+WantedBy=multi-user.target

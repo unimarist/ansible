@@ -1,0 +1,11 @@
+---
+- name: check file /lib/systemd/system/grafana-server.service
+  stat:
+    path: /lib/systemd/system/grafana-server.service
+  register: grafana-server
+
+- include_tasks: install.yml
+  when: not grafana-server.stat.exists
+
+- include_tasks: setting.yml
+  when: not grafana-server.stat.exists

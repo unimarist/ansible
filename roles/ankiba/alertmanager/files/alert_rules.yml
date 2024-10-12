@@ -1,0 +1,80 @@
+groups:
+  - name: alert
+    rules:
+      - alert: Target Down
+        expr: up == 0
+        for: 5s
+        labels:
+          severity: critical
+        annotations:
+          description: "{{ $labels.job }} : {{ $labels.instance }} がホストダウンしました"
+      - alert: CPU Usage warning
+        expr: 100 - (avg without(cpu) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) >= 70
+        for: 5s
+        labels:
+          severity: warning
+        annotations:
+          description: "{{ $labels.instance }} のCPU使用率が70%を超えました"
+      - alert: CPU Usage critical
+        expr: 100 - (avg without(cpu) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) >= 90
+        for: 5s
+        labels:
+          severity: critical
+        annotations:
+          description: "{{ $labels.instance }} のCPU使用率が90%を超えました"
+      - alert: Memory Usage warning
+        expr: avg_over_time(node_memory_Active_bytes[1m]) / avg_over_time(node_memory_MemTotal_bytes[1m]) * 100 >= 70
+        for: 5s
+        labels:
+          severity: warning
+        annotations:
+          description: "{{ $labels.instance }} のMemory使用率が70%を超えました"
+      - alert: Memory Usage critical
+        expr: avg_over_time(node_memory_Active_bytes[1m]) / avg_over_time(node_memory_MemTotal_bytes[1m]) * 100 >= 90
+        for: 5s
+        labels:
+          severity: critical
+        annotations:
+          description: "{{ $labels.instance }} のMemory使用率が90%を超えました"
+      - alert: Disk(/root) Usage warning
+        expr: node_filesystem_avail_bytes{device="/dev/root", mountpoint="/"} / node_filesystem_size_bytes{device="/dev/root", mountpoint="/"} * -100 + 100 >= 70
+        for: 5s
+        labels:
+          severity: warning
+        annotations:
+          description: "{{ $labels.instance }} のDisk(/root)使用率が70%を超えました"
+      - alert: Disk(/root) Usage critical
+        expr: node_filesystem_avail_bytes{device="/dev/root", mountpoint="/"} / node_filesystem_size_bytes{device="/dev/root", mountpoint="/"} * -100 + 100 >= 90
+        for: 5s
+        labels:
+          severity: critical
+        annotations:
+          description: "{{ $labels.instance }} のDisk(/root)使用率が90%を超えました"
+      - alert: MySQL Down
+        expr: mysql_up == 0
+        for: 5s
+        labels:
+          severity: critical
+        annotations:
+          description: "{{ $labels.job }} : {{ $labels.instance }} MySQLがダウンしました"
+      - alert: AP Pod Down
+        expr: kube_pod_status_ready{condition="false", pod=~"ankiba-ap-deployment.*"} == 1
+        for: 5s
+        labels:
+          severity: critical
+        annotations:
+          description: "{{ $labels.job }} : {{ $labels.instance }} {{ $labels.pod }} がダウンしました"
+      - alert: Web Pod Down
+        expr: kube_pod_status_ready{condition="false", pod=~"ankiba-nginx-deployment.*"} == 1
+        for: 5s
+        labels:
+          severity: critical
+        annotations:
+          description: "{{ $labels.job }} : {{ $labels.instance }} {{ $labels.pod }} がダウンしました"
+      - alert: URL Down
+        expr: probe_success{job='blackbox'} != 1
+        for: 5s
+        labels:
+          severity: critical
+        annotations:
+          description: "{{ $labels.job }} : ankiba.net http request not return 200 for more than 5 seconds."

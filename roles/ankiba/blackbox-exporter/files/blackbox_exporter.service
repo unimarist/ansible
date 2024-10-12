@@ -1,0 +1,11 @@
+[Unit]
+Description=blackbox_exporter
+
+[Service]
+User=blackbox_exporter
+ExecStart=/sbin/blackbox_exporter --config.file=/home/blackbox_exporter/blackbox.yml
+ExecStop=/bin/kill -TERM ${MAINPID}
+ExecReload=/bin/kill -HUP ${MAINPID}
+
+[Install]
+WantedBy=multi-user.target
