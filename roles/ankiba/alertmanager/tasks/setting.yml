@@ -1,13 +1,13 @@
 - name: set alertmanager.sh
   copy:
     src: alertmanager.sh
-    dest: /tmp/alertmanager.sh
+    dest: /usr/local/bin/alertmanager.sh
     owner: root
     group: root
     mode: 0755
 
 - name: execute alertmanager.sh
-  script: /tmp/alertmanager.sh
+  script: /usr/local/bin/alertmanager.sh
 
 - name : set conf
   template:

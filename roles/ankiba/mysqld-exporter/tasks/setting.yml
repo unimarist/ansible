@@ -1,13 +1,13 @@
 - name: set mysqld_exporter_setting.sh
   copy:
     src: mysqld_exporter.sh
-    dest: /tmp/mysqld_exporter
+    dest: /usr/local/bin/mysqld_exporter.sh
     owner: root
     group: root
     mode: 0755
 
 - name: execute mysqld_exporter.sh
-  script: /tmp/mysqld_exporter.sh
+  script: /usr/local/bin/mysqld_exporter.sh
 
 - name: create mysql user
   mysql_user:

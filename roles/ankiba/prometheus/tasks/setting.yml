@@ -1,13 +1,13 @@
 - name: set prom_setting.sh
   copy:
     src: prom_setting.sh
-    dest: /tmp/prom_setting.sh
+    dest: /usr/local/bin/prom_setting.sh
     owner: root
     group: root
     mode: 0755
 
 - name: execute prom_setting.sh
-  script: /tmp/prom_setting.sh
+  script: /usr/local/bin/prom_setting.sh
 
 - name : set conf
   template:
