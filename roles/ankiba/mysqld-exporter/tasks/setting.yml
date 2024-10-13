@@ -7,7 +7,7 @@
     mode: 0755
 
 - name: execute mysqld_exporter.sh
-  script: /usr/local/bin/mysqld_exporter.sh
+  shell: /usr/local/bin/mysqld_exporter.sh
 
 - name: create mysql user
   mysql_user:
@@ -17,7 +17,7 @@
     name: mysqld_exporter
     host: localhost
     password: "{{ mysql_password }}"
-    priv: '*.*:GRANT PROCESS, REPLICATION CLIENT, SELECT ON'
+    priv: '*.*:PROCESS, REPLICATION CLIENT, SELECT'
     state: present
 
 - name: set .my.cnf

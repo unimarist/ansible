@@ -7,7 +7,7 @@
     mode: 0755
 
 - name: execute blackbox_exporter.sh
-  script: /usr/local/bin/blackbox_exporter.sh
+  shell: /usr/local/bin/blackbox_exporter.sh
 
 - name: set blackbox_exporter.service
   copy:

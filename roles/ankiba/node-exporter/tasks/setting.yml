@@ -7,7 +7,7 @@
     mode: 0755
 
 - name: execute node_exporter_setting.sh
-  script: /usr/local/bin/node_exporter_setting.sh
+  shell: /usr/local/bin/node_exporter_setting.sh
 
 - name: set node_exporter.service
   copy:

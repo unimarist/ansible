@@ -7,7 +7,7 @@
     mode: 0755
 
 - name: execute alertmanager.sh
-  script: /usr/local/bin/alertmanager.sh
+  shell: /usr/local/bin/alertmanager.sh
 
 - name : set conf
   template:
