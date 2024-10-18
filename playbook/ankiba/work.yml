@@ -4,8 +4,8 @@
   roles:
     - ankiba/node-exporter
     - ankiba/blackbox-exporter
-    - ankiba/alertmanager
     - ankiba/prometheus
+    - ankiba/alertmanager
     - ankiba/grafana
   vars_prompt:
     - name: "work_private_ip"

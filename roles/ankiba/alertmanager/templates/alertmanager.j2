@@ -12,5 +12,5 @@ receivers:
   - name: 'slack'
     slack_configs:
       - api_url: https://hooks.slack.com/services/{{ slack_webhook_url }}
-        text: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
+        text: "\{\{ range .Alerts \}\}\{\{ .Annotations.description\}\}\n\{\{ end\}\}"
         send_resolved: true
