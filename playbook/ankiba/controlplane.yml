@@ -1,3 +1,5 @@
+# kubeadmで構築する場合のplaybook
+
 ---
 - hosts: all
   become: yes
