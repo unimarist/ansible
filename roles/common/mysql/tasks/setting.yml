@@ -1,6 +1,6 @@
 - name: set my.cnf
   copy:
-    src: my.cnf.ankiba
+    src: my.cnf.common
     dest: /etc/my.cnf
     owner: root
     group: root

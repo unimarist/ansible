@@ -11,5 +11,5 @@
 - include_tasks: setting.yml
   when: mysql_is_installed.stdout == ""
 
-- include_tasks: create.yml
-  when: mysql_is_installed.stdout == ""
+#- include_tasks: create.yml                # システム特有設定
+#  when: mysql_is_installed.stdout == ""    # システム特有設定
