@@ -2,6 +2,6 @@
 - hosts: all
   become: yes
   roles:
-    - ankiba/mysql
-    - ankiba/node-exporter
-    - ankiba/mysqld-exporter
+    - common/mysql
+    - common/node-exporter
+    - common/mysqld-exporter
