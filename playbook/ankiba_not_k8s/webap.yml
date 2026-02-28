@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: ankiba_not_k8s/adduser
+    - role: ankiba_not_k8s/install
+    - role: ankiba_not_k8s/nginx
+    - role: ankiba_not_k8s/unicorn

@@ -1,12 +1,10 @@
-# kubeadmで構築する場合のplaybook
-
 ---
 - hosts: all
   become: yes
   roles:
-    - ankiba/containerd
-    - ankiba/kube
-    - ankiba/controlplane
+    - common_kubeadm/containerd
+    - common_kubeadm/kube
+    - common_kubeadm/controlplane
   vars_prompt:
     - name: "controlplane_public_ip"
       prompt: "controlplaneノードのパブリックIPアドレスを入力"

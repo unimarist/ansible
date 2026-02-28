@@ -1,12 +1,10 @@
-# kubeadmで構築する場合のplaybook
-
 ---
 - hosts: all
   become: yes
   roles:
-    - ankiba/containerd
-    - ankiba/kube
-    - ankiba/workernode
+    - common_kubeadm/containerd
+    - common_kubeadm/kube
+    - common_kubeadm/workernode
   vars_prompt:
     - name: "bootstraptoken"
       prompt: "controlplaneのクラスタ作成時に出力させたログから控えた値(bootstraptoken)を入力"
