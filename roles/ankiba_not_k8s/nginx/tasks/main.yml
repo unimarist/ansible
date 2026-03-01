@@ -1,7 +1,7 @@
 - name: nginx.conf
   copy:
-    src: memory_tank.conf
-    dest: /etc/nginx/conf.d/memory_tank.conf
+    src: ankiba.conf
+    dest: /etc/nginx/conf.d/ankiba.conf
     owner: root
     group: root
     mode: 0644

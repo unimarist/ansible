@@ -1,6 +1,6 @@
 - name: vi Gemfile
   blockinfile:
-      path: /var/www/rails/memory_tank/Gemfile
+      path: /var/www/rails/ankiba/Gemfile
       block: |
         group :production, :staging do
             gem 'unicorn'
@@ -13,13 +13,13 @@
 
 - name: bundle install
   become_user: site-user
-  shell: cd /var/www/rails/memory_tank;
+  shell: cd /var/www/rails/ankiba;
          /bin/bash -lc "bundle install";
 
 - name: unicorn.conf
   copy:
     src: unicorn.conf.rb
-    dest: /var/www/rails/memory_tank/config/unicorn.conf.rb
+    dest: /var/www/rails/ankiba/config/unicorn.conf.rb
     owner: site-user
     group: site-user
     mode: 0644

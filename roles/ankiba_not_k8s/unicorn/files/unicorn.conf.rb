@@ -3,7 +3,7 @@ $worker  = 2
 #Railsアプリケーションの応答を待つ上限時間
 $timeout = 30
 #アプリケーションコードが設置されているディレクトリ
-$app_dir = "/var/www/rails/memory_tank" 
+$app_dir = "/var/www/rails/ankiba" 
 #待ち受けパス
 $listen  = File.expand_path 'tmp/sockets/.unicorn.sock', $app_dir
 #Unicornの起動に必要なファイルのパス
