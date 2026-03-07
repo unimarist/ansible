@@ -2,11 +2,11 @@
 - hosts: all
   become: yes
   roles:
-    - common_kubesplay/node-exporter
-    - common_kubesplay/blackbox-exporter
-    - common_kubesplay/prometheus
-    - common_kubesplay/alertmanager
-    - common_kubesplay/grafana
+    - common_infra/node-exporter
+    - common_infra/blackbox-exporter
+    - common_infra/prometheus
+    - common_infra/alertmanager
+    - common_infra/grafana
   vars_prompt:
     - name: "work_private_ip"
       prompt: "workサーバのプライベートIPアドレスを入力"
