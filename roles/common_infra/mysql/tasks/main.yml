@@ -11,5 +11,5 @@
 - include_tasks: setting.yml
   when: mysql_is_installed.stdout == ""
 
-#- include_tasks: create_ankiba.yml         # 「ankiba」サービス用特有設定
-#  when: mysql_is_installed.stdout == ""    # 
+- include_tasks: create_ankiba.yml         # 「ankiba」サービス用特有設定
+  when: mysql_is_installed.stdout != ""
