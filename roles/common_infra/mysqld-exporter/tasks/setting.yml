@@ -12,11 +12,11 @@
 - name: create mysql user
   mysql_user:
     login_user: root
-    login_password: "{{ mysql_password }}"
+    login_password: "{{ mysql_root_password }}"
     login_host: localhost
     name: mysqld_exporter
     host: localhost
-    password: "{{ mysql_password }}"
+    password: "{{ mysql_mysqld_exporter_password }}"
     priv: '*.*:PROCESS, REPLICATION CLIENT, SELECT'
     state: present
 
