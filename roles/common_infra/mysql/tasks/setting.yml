@@ -18,4 +18,4 @@
     state: restarted
 
 - name: set root pass
-  shell: mysql -uroot -e "alter user 'root'@'localhost' identified with mysql_native_password BY '{{ mysql_password }}';"
+  shell: mysql -uroot -e "alter user 'root'@'localhost' identified with mysql_native_password BY '{{ mysql_root_password }}';"

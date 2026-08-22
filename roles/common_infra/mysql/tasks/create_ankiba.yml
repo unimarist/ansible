@@ -1,18 +1,26 @@
-- name: create mysql database
+- name: create mysql staging database
   mysql_db:
     login_user: root
     login_host: localhost
-    login_password: "{{ mysql_password }}"
-    name: ankiba
+    login_password: "{{ mysql_root_password }}"
+    name: ankiba_staging
     state: present
 
-- name: create mysql user
+- name: create mysql production database
+  mysql_db:
+    login_user: root
+    login_host: localhost
+    login_password: "{{ mysql_root_password }}"
+    name: ankiba_production
+    state: present
+
+- name: create mysql ankiba user
   mysql_user:
     login_user: root
-    login_password: "{{ mysql_password }}"
+    login_password: "{{ mysql_root_password }}"
     login_host: localhost
-    name: "{{ mysql_user }}"
-    host: "{{ mysql_host }}"
-    password: "{{ mysql_password }}"
+    name: "{{ mysql_ankiba_user }}"
+    host: "{{ mysql_ankiba_host }}"
+    password: "{{ mysql_ankiba_password }}"
     priv: ankiba.*:ALL,GRANT
     state: present
