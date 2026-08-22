@@ -22,5 +22,5 @@
     name: "{{ mysql_ankiba_user }}"
     host: "{{ mysql_ankiba_host }}"
     password: "{{ mysql_ankiba_password }}"
-    priv: ankiba_staging.*:ALL|ankiba_production.*:ALL
+    priv: "ankiba_staging.*:ALL|ankiba_production.*:ALL"
     state: present
